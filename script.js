@@ -3152,18 +3152,56 @@
     render();
   })();
 
-  if ("serviceWorker" in navigator) {
+  let deferredInstallPrompt = null;
+
+// Register Service Worker
+if ("serviceWorker" in navigator) {
+
   window.addEventListener("load", () => {
+
     navigator.serviceWorker.register("./sw.js");
+
   });
+
 }
 
-let deferredInstallPrompt;
 
+// Capture Chrome's install prompt
 window.addEventListener("beforeinstallprompt", event => {
+
+  // Prevent Chrome from showing its automatic mini-infobar/prompt
+  // We still keep Chrome's install icon in the address bar.
   event.preventDefault();
+
   deferredInstallPrompt = event;
 
-  deferredInstallPrompt.prompt();
+});
+
+
+// Show our own install confirmation when the website loads
+window.addEventListener("load", () => {
+
+  if (!deferredInstallPrompt) {
+    return;
+  }
+
+  const installApp = confirm(
+    "Install web app?\n\n" +
+    "You can install this website into your applications."
+  );
+
+  if (installApp) {
+
+    deferredInstallPrompt.prompt();
+
+    deferredInstallPrompt.userChoice.then(choice => {
+
+      console.log("Install prompt result:", choice.outcome);
+
+      deferredInstallPrompt = null;
+
+    });
+
+  }
 
 });

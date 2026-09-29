@@ -1,0 +1,25 @@
+{
+    "name": "PLindows",
+    "short_name": "PLindows",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#111111",
+    "theme_color": "#111111",
+    "icons": [
+        {
+            "src": "./assets/windows-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/windows-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/windows-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

@@ -598,6 +598,8 @@
             <button data-action="archive">
               Archive
             </button>
+
+            <button id="install-app">Install App</button>
           </nav>
   
           <button
@@ -3158,66 +3160,27 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// let deferredInstallPrompt;
-
-// window.addEventListener("beforeinstallprompt", event => {
-//   event.preventDefault();
-//   deferredInstallPrompt = event;
-
-//   deferredInstallPrompt.prompt();
-
-// });
-
-let deferredInstallPrompt = null;
-
-// Register Service Worker
-if ("serviceWorker" in navigator) {
-
-  window.addEventListener("load", () => {
-
-    navigator.serviceWorker.register("./sw.js");
-
-  });
-
-}
-
-
-// Capture Chrome's install prompt
-window.addEventListener("beforeinstallprompt", event => {
-
-  // Prevent Chrome from showing its automatic mini-infobar/prompt
-  // We still keep Chrome's install icon in the address bar.
-  event.preventDefault();
-
-  deferredInstallPrompt = event;
-
-});
-
-
-// Show our own install confirmation when the website loads
-window.addEventListener("load", () => {
+document.getElementById("install-app").addEventListener("click", async () => {
 
   if (!deferredInstallPrompt) {
-    return;
+      return;
   }
 
-  const installApp = confirm(
-    "Install web app?\n\n" +
-    "You can install this website into your applications."
+  const install = confirm(
+      "Install web app?\n\n" +
+      "You can install this website into your applications."
   );
 
-  if (installApp) {
-
-    deferredInstallPrompt.prompt();
-
-    deferredInstallPrompt.userChoice.then(choice => {
-
-      console.log("Install prompt result:", choice.outcome);
-
-      deferredInstallPrompt = null;
-
-    });
-
+  if (!install) {
+      return;
   }
+
+  deferredInstallPrompt.prompt();
+
+  const { outcome } = await deferredInstallPrompt.userChoice;
+
+  console.log(`Install prompt: ${outcome}`);
+
+  deferredInstallPrompt = null;
 
 });

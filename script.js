@@ -3159,28 +3159,3 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js");
   });
 }
-
-document.getElementById("install-app").addEventListener("click", async () => {
-
-  if (!deferredInstallPrompt) {
-      return;
-  }
-
-  const install = confirm(
-      "Install web app?\n\n" +
-      "You can install this website into your applications."
-  );
-
-  if (!install) {
-      return;
-  }
-
-  deferredInstallPrompt.prompt();
-
-  const { outcome } = await deferredInstallPrompt.userChoice;
-
-  console.log(`Install prompt: ${outcome}`);
-
-  deferredInstallPrompt = null;
-
-});
